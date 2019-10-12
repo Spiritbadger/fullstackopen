@@ -25,6 +25,7 @@ const App = () => {
     const handleSearchTermChange = (event) => {
         setSearchTerm(event.target.value)
     }
+
     const addPerson = (event) => {
         event.preventDefault()
         const personObject = {
