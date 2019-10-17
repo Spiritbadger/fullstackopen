@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
 import Persons from './components/Persons'
+import Notification from './components/Notification'
 import personService from './services/persons'
 
 const App = () => {
@@ -9,6 +10,8 @@ const App = () => {
     const [newName, setNewName] = useState('')
     const [newNumber, setNewNumber] = useState('')
     const [searchTerm, setSearchTerm] = useState('')
+    const [notificationMessage, setNotificationMessage] = useState(null)
+    const [notificationStatus, setNotificationStatus] = useState(null)
 
     useEffect(() => {
         personService
@@ -46,6 +49,30 @@ const App = () => {
                     .then(returnedPerson => {
                         setPersons(persons.map(person => person.id !== changedPerson.id ? person : returnedPerson))
                     })
+                    .catch(error => {
+                        setNewName('')
+                        setNewNumber('')
+                        setNotificationStatus('error')
+                        setNotificationMessage(
+                            `Information of ${changedPerson.name} has already been removed from server`
+                        )
+                        setTimeout(() => {
+                            setNotificationMessage(null)
+                            setNotificationStatus(null)
+                        }, 5000)
+                        setPersons(persons.filter(n => n.id !== changedPerson.id))
+                    })
+
+                setNewName('')
+                setNewNumber('')
+                setNotificationStatus('success')
+                setNotificationMessage(
+                    `Updated number for ${changedPerson.name}`
+                )
+                setTimeout(() => {
+                    setNotificationMessage(null)
+                    setNotificationStatus(null)
+                }, 5000)
             }
         }
         else {
@@ -56,6 +83,14 @@ const App = () => {
                     setNewName('')
                     setNewNumber('')
                 })
+            setNotificationStatus('success')
+            setNotificationMessage(
+                `Added ${personObject.name}`
+            )
+            setTimeout(() => {
+                setNotificationMessage(null)
+                setNotificationStatus(null)
+            }, 5000)
         }
     }
 
@@ -66,12 +101,35 @@ const App = () => {
                 .then(
                     setPersons(persons.filter(person => person.id !== personToRemove.id))
                 )
+                .catch(error => {
+                    setNewName('')
+                    setNewNumber('')
+                    setNotificationStatus('error')
+                    setNotificationMessage(
+                        `Information of ${personToRemove.name} has already been removed from server`
+                    )
+                    setTimeout(() => {
+                        setNotificationMessage(null)
+                        setNotificationStatus(null)
+                    }, 5000)
+                    setPersons(persons.filter(n => n.id !== personToRemove.id))
+                })
+
+            setNotificationStatus('success')
+            setNotificationMessage(
+                `Deleted ${personToRemove.name}`
+            )
+            setTimeout(() => {
+                setNotificationMessage(null)
+                setNotificationStatus(null)
+            }, 5000)
         }
     }
 
     return (
         <div>
-            <h2>Phonebook</h2>
+            <h1>Phonebook</h1>
+            <Notification message={notificationMessage} notificationStatus={notificationStatus} />
             <Filter searchTerm={searchTerm} handleSearchTermChange={handleSearchTermChange} />
             <h2>add a new</h2>
             <PersonForm addPerson={addPerson} newName={newName} handleNameChange={handleNameChange} newNumber={newNumber} handleNumberChange={handleNumberChange} />
