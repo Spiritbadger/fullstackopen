@@ -82,15 +82,24 @@ const App = () => {
                     setPersons(persons.concat(returnedPerson))
                     setNewName('')
                     setNewNumber('')
+                    setNotificationStatus('success')
+                    setNotificationMessage(`Added ${personObject.name}`)
+                    setTimeout(() => {
+                        setNotificationMessage(null)
+                        setNotificationStatus(null)
+                    }, 5000)
+                }).catch(error => {
+                    setNewName('')
+                    setNewNumber('')
+                    setNotificationStatus('error')
+                    setNotificationMessage(`${error.response.data.error}`)
+                    setTimeout(() => {
+                        setNotificationMessage(null)
+                        setNotificationStatus(null)
+                    }, 5000)
+                    console.log(error.response.data)
                 })
-            setNotificationStatus('success')
-            setNotificationMessage(
-                `Added ${personObject.name}`
-            )
-            setTimeout(() => {
-                setNotificationMessage(null)
-                setNotificationStatus(null)
-            }, 5000)
+
         }
     }
 
