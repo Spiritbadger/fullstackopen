@@ -12,9 +12,12 @@ const totalLikes = (blogs) => {
 }
 
 const favoriteBlog = (blogs) => {
-  const max = Math.max.apply(Math, blogs.map(blog => blog.likes))
-  const favorite = blogs.find(blog => blog.likes === max)
-  return { "author": favorite.author, "likes": favorite.likes, "title": favorite.title }
+  const reducer = (max, obj) => {
+    return obj.likes > max.likes
+      ? { 'title': obj.title, 'author': obj.author, 'likes': obj.likes }
+      : { 'title': max.title, 'author': max.author, 'likes': max.likes };
+  }
+  return blogs.reduce(reducer)
 }
 
 const mostBlogs = (blogs) => {
