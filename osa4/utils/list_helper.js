@@ -15,7 +15,7 @@ const favoriteBlog = (blogs) => {
   const reducer = (max, obj) => {
     return obj.likes > max.likes
       ? { 'title': obj.title, 'author': obj.author, 'likes': obj.likes }
-      : { 'title': max.title, 'author': max.author, 'likes': max.likes };
+      : { 'title': max.title, 'author': max.author, 'likes': max.likes }
   }
   return blogs.reduce(reducer)
 }
