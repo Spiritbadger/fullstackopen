@@ -28,7 +28,7 @@ const Blog = ({ blog, user, addLike, removeBlog }) => {
       <div onClick={() => setFullInfoVisible(!fullInfoVisible)}>
         {blog.title}
       </div>
-      <div style={showWhenVisible}>
+      <div style={showWhenVisible} className="togglableContent">
         <a href={blog.url}>{blog.url}</a>
         <br />
         {blog.likes} likes <button onClick={() => addLike(blog.id)}>like</button>
