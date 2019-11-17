@@ -7,17 +7,18 @@ import Togglable from './components/Togglable'
 import blogService from './services/blogs'
 import loginService from './services/login'
 import BlogForm from './components/BlogForm'
+import { useField } from './hooks'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
   const [newTitle, setNewTitle] = useState('')
   const [newAuthor, setNewAuthor] = useState('')
   const [newUrl, setNewUrl] = useState('')
   const [notificationMessage, setNotificationMessage] = useState(null)
   const [notificationStatus, setNotificationStatus] = useState(null)
+  const username = useField('text')
+  const password = useField('password')
 
   useEffect(() => {
     blogService
@@ -36,9 +37,10 @@ const App = () => {
 
   const handleLogin = async (event) => {
     event.preventDefault()
+
     try {
       const user = await loginService.login({
-        username, password,
+        username: username.value, password: password.value
       })
 
       window.localStorage.setItem(
@@ -46,13 +48,13 @@ const App = () => {
       )
       blogService.setToken(user.token)
       setUser(user)
-      setUsername('')
-      setPassword('')
+      username.reset()
+      password.reset()
     } catch (exception) {
       setNotificationMessage('wrong username or password')
       setNotificationStatus('error')
-      setUsername('')
-      setPassword('')
+      username.reset()
+      password.reset()
       setTimeout(() => {
         setNotificationMessage(null)
         setNotificationStatus(null)
@@ -97,8 +99,8 @@ const App = () => {
         setNewUrl('')
         setNotificationMessage(`a new blog ${blogObject.title} by ${blogObject.author} added`)
         setNotificationStatus('success')
-        setUsername('')
-        setPassword('')
+        username.reset()
+        password.reset()
         setTimeout(() => {
           setNotificationMessage(null)
           setNotificationStatus(null)
@@ -132,16 +134,19 @@ const App = () => {
     }
   }
 
+  const removeReset = (object) => {
+    const { reset: _, ...rest } = object
+    return rest
+  }
+
   if (user === null) {
     return (
       <div>
         <h2>Log in to application</h2>
         <Notification message={notificationMessage} notificationStatus={notificationStatus} />
         <LoginForm
-          username={username}
-          password={password}
-          handleUsernameChange={({ target }) => setUsername(target.value)}
-          handlePasswordChange={({ target }) => setPassword(target.value)}
+          username={removeReset(username)}
+          password={removeReset(password)}
           handleSubmit={handleLogin}
         />
       </div>
