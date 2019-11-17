@@ -135,7 +135,8 @@ const App = () => {
   }
 
   const removeReset = (object) => {
-    const { reset: _, ...rest } = object
+    // eslint-disable-next-line no-unused-vars
+    const { reset, ...rest } = object
     return rest
   }
 
