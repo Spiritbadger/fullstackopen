@@ -5,6 +5,10 @@ import axios from 'axios'
 const useField = (type) => {
   const [value, setValue] = useState('')
 
+  const reset = () => {
+    setValue('')
+  }
+
   const onChange = (event) => {
     setValue(event.target.value)
   }
@@ -12,17 +16,22 @@ const useField = (type) => {
   return {
     type,
     value,
-    onChange
+    onChange,
+    reset
   }
 }
 
 const useResource = (baseUrl) => {
   const [resources, setResources] = useState([])
 
-  useEffect(() => {
+  const getAll = () => {
     const request = axios.get(baseUrl)
-    request.then(response => setResources(response.data))
-  }, [baseUrl])
+    return request.then(response => response.data)
+  }
+
+  const addResources = (newResources) => {
+    setResources(newResources)
+  }
 
   const create = async (resource) => {
     const response = await axios.post(baseUrl, resource)
@@ -30,7 +39,9 @@ const useResource = (baseUrl) => {
   }
 
   const service = {
-    create
+    getAll,
+    create,
+    addResources
   }
 
   return [
@@ -46,14 +57,35 @@ const App = () => {
   const [notes, noteService] = useResource('http://localhost:3005/notes')
   const [persons, personService] = useResource('http://localhost:3005/persons')
 
+  useEffect(() => {
+    noteService
+      .getAll()
+      .then(initialNotes => noteService.addResources(initialNotes))
+  }, [])
+
+  useEffect(() => {
+    personService
+      .getAll()
+      .then(initialPersons => personService.addResources(initialPersons))
+  }, [])
+
   const handleNoteSubmit = (event) => {
     event.preventDefault()
     noteService.create({ content: content.value })
+      .then(data => {
+        noteService.addResources(notes.concat(data))
+        content.reset()
+      })
   }
 
   const handlePersonSubmit = (event) => {
     event.preventDefault()
     personService.create({ name: name.value, number: number.value })
+      .then(data => {
+        personService.addResources(persons.concat(data))
+        name.reset()
+        number.reset()
+      })
   }
 
   return (
