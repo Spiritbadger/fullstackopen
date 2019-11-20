@@ -1,6 +1,6 @@
 import React from 'react'
-
 import { vote } from '../reducers/anecdoteReducer'
+import { notificationChange } from '../reducers/notificationReducer'
 
 const AnecdoteList = ({ store }) => {
   return (
@@ -13,7 +13,14 @@ const AnecdoteList = ({ store }) => {
             </div>
             <div>
               has {anecdote.votes}
-              <button onClick={() => store.dispatch(vote(anecdote.id))}>vote</button>
+              <button onClick={() => {
+                store.dispatch(vote(anecdote.id))
+                store.dispatch(notificationChange(`you voted '${anecdote.content}'`
+                ))
+                setTimeout(() => {
+                  store.dispatch(notificationChange(null))
+                }, 5000)
+              }}>vote</button>
             </div>
           </div>
         )
