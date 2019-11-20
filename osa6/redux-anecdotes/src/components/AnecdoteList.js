@@ -6,7 +6,7 @@ const AnecdoteList = ({ store }) => {
   return (
     <div>
       {
-        store.getState().sort((a, b) => a.votes - b.votes).reverse().map(anecdote =>
+        store.getState().anecdotes.sort((a, b) => a.votes - b.votes).reverse().map(anecdote =>
           <div key={anecdote.id}>
             <div>
               {anecdote.content}
