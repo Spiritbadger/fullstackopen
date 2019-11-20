@@ -2,11 +2,15 @@ import React from 'react'
 import { vote } from '../reducers/anecdoteReducer'
 import { notificationChange } from '../reducers/notificationReducer'
 
+
 const AnecdoteList = ({ store }) => {
+  console.log(store.getState().anecdotes)
+  const anecdotesToShow = () => store.getState().anecdotes.filter(anecdote => anecdote.content.toLowerCase().includes(store.getState().filter.toLowerCase()))
+
   return (
     <div>
       {
-        store.getState().anecdotes.sort((a, b) => a.votes - b.votes).reverse().map(anecdote =>
+        anecdotesToShow().sort((a, b) => a.votes - b.votes).reverse().map(anecdote =>
           <div key={anecdote.id}>
             <div>
               {anecdote.content}
