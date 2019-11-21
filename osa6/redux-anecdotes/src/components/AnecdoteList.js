@@ -5,7 +5,6 @@ import { notificationChange } from '../reducers/notificationReducer'
 
 
 const AnecdoteList = (props) => {
-  //const { anecdotes, filter } = store.getState()
   const anecdotesToShow = () => props.anecdotes.filter(anecdote => anecdote.content.toLowerCase().includes(props.filter.toLowerCase()))
 
   return (
@@ -19,12 +18,9 @@ const AnecdoteList = (props) => {
             <div>
               has {anecdote.votes}
               <button onClick={() => {
-                props.store.dispatch(vote(anecdote.id))
-                props.store.dispatch(notificationChange(`you voted '${anecdote.content}'`
-                ))
-                setTimeout(() => {
-                  props.store.dispatch(notificationChange(null))
-                }, 5000)
+                props.vote(anecdote.id)
+                props.notificationChange(`you voted '${anecdote.content}'`)
+                setTimeout(() => { props.notificationChange(null) }, 5000)
               }}>vote</button>
             </div>
           </div>
@@ -35,7 +31,6 @@ const AnecdoteList = (props) => {
 }
 
 const mapStateToProps = (state) => {
-  // joskus on hyödyllistä tulostaa mapStateToProps:ista...
   console.log(state)
   return {
     anecdotes: state.anecdotes,
@@ -43,6 +38,14 @@ const mapStateToProps = (state) => {
   }
 }
 
-const ConnectedAnecdotes = connect(mapStateToProps)(AnecdoteList)
+const mapDispatchToProps = {
+  vote,
+  notificationChange
+}
+
+const ConnectedAnecdotes = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(AnecdoteList)
 
 export default ConnectedAnecdotes

@@ -2,8 +2,6 @@ import React from 'react'
 import { connect } from 'react-redux'
 
 const Notification = (props) => {
-  //const { notification } = store.getState()
-
   const style = {
     border: 'solid',
     padding: 10,
@@ -22,7 +20,6 @@ const Notification = (props) => {
 }
 
 const mapStateToProps = (state) => {
-  // joskus on hyödyllistä tulostaa mapStateToProps:ista...
   console.log(state)
   return {
     notification: state.notification
