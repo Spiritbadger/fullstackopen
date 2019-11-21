@@ -1,11 +1,12 @@
 import React from 'react'
+import { connect } from 'react-redux'
 import { vote } from '../reducers/anecdoteReducer'
 import { notificationChange } from '../reducers/notificationReducer'
 
 
-const AnecdoteList = ({ store }) => {
-  const { anecdotes, filter } = store.getState()
-  const anecdotesToShow = () => anecdotes.filter(anecdote => anecdote.content.toLowerCase().includes(filter.toLowerCase()))
+const AnecdoteList = (props) => {
+  //const { anecdotes, filter } = store.getState()
+  const anecdotesToShow = () => props.anecdotes.filter(anecdote => anecdote.content.toLowerCase().includes(props.filter.toLowerCase()))
 
   return (
     <div>
@@ -18,11 +19,11 @@ const AnecdoteList = ({ store }) => {
             <div>
               has {anecdote.votes}
               <button onClick={() => {
-                store.dispatch(vote(anecdote.id))
-                store.dispatch(notificationChange(`you voted '${anecdote.content}'`
+                props.store.dispatch(vote(anecdote.id))
+                props.store.dispatch(notificationChange(`you voted '${anecdote.content}'`
                 ))
                 setTimeout(() => {
-                  store.dispatch(notificationChange(null))
+                  props.store.dispatch(notificationChange(null))
                 }, 5000)
               }}>vote</button>
             </div>
@@ -33,4 +34,15 @@ const AnecdoteList = ({ store }) => {
   )
 }
 
-export default AnecdoteList
+const mapStateToProps = (state) => {
+  // joskus on hyödyllistä tulostaa mapStateToProps:ista...
+  console.log(state)
+  return {
+    anecdotes: state.anecdotes,
+    filter: state.filter
+  }
+}
+
+const ConnectedAnecdotes = connect(mapStateToProps)(AnecdoteList)
+
+export default ConnectedAnecdotes
