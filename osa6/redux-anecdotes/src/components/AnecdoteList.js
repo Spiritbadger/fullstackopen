@@ -4,8 +4,8 @@ import { notificationChange } from '../reducers/notificationReducer'
 
 
 const AnecdoteList = ({ store }) => {
-  console.log(store.getState().anecdotes)
-  const anecdotesToShow = () => store.getState().anecdotes.filter(anecdote => anecdote.content.toLowerCase().includes(store.getState().filter.toLowerCase()))
+  const { anecdotes, filter } = store.getState()
+  const anecdotesToShow = () => anecdotes.filter(anecdote => anecdote.content.toLowerCase().includes(filter.toLowerCase()))
 
   return (
     <div>
