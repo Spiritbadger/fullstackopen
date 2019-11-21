@@ -5,36 +5,40 @@ import { notificationChange } from '../reducers/notificationReducer'
 
 
 const AnecdoteList = (props) => {
-  const anecdotesToShow = () => props.anecdotes.filter(anecdote => anecdote.content.toLowerCase().includes(props.filter.toLowerCase()))
-
   return (
     <div>
-      {
-        anecdotesToShow().sort((a, b) => a.votes - b.votes).reverse().map(anecdote =>
-          <div key={anecdote.id}>
-            <div>
-              {anecdote.content}
-            </div>
-            <div>
-              has {anecdote.votes}
-              <button onClick={() => {
-                props.vote(anecdote.id)
-                props.notificationChange(`you voted '${anecdote.content}'`)
-                setTimeout(() => { props.notificationChange(null) }, 5000)
-              }}>vote</button>
-            </div>
+      {props.anecdotesToShow.map(anecdote =>
+        <div key={anecdote.id}>
+          <div>
+            {anecdote.content}
           </div>
-        )
+          <div>
+            has {anecdote.votes}
+            <button onClick={() => {
+              props.vote(anecdote.id)
+              props.notificationChange(`you voted '${anecdote.content}'`)
+              setTimeout(() => { props.notificationChange(null) }, 5000)
+            }}>vote</button>
+          </div>
+        </div>
+      )
       }
     </div >
   )
 }
 
+const anecdotesToShow = ({ anecdotes, filter }) =>
+  anecdotes
+    .filter(anecdote => anecdote.content
+      .toLowerCase()
+      .includes(filter.toLowerCase()))
+    .sort((a, b) => a.votes - b.votes)
+    .reverse()
+
 const mapStateToProps = (state) => {
   console.log(state)
   return {
-    anecdotes: state.anecdotes,
-    filter: state.filter
+    anecdotesToShow: anecdotesToShow(state)
   }
 }
 
