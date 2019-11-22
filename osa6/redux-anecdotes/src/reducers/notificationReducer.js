@@ -1,6 +1,4 @@
 const notificationReducer = (state = null, action) => {
-  console.log('state now: ', state)
-  console.log('action', action)
   switch (action.type) {
     case 'SET_NOTIFICATION':
       return action.value
@@ -11,7 +9,7 @@ const notificationReducer = (state = null, action) => {
   }
 }
 
-export const setNotification = (value, timeOut) => {
+export const setNotification = (value, timer) => {
   return async dispatch => {
     dispatch({
       type: 'SET_NOTIFICATION',
@@ -21,7 +19,7 @@ export const setNotification = (value, timeOut) => {
       dispatch({
         type: 'CLEAR_NOTIFICATION',
       })
-    }, timeOut * 1000)
+    }, timer * 1000)
   }
 
 }
