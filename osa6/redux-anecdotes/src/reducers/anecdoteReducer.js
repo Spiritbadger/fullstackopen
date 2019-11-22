@@ -32,10 +32,31 @@ export const initializeAnecdotes = () => {
   }
 }
 
+/*
 export const vote = (id) => {
-  return {
-    type: 'VOTE',
-    data: { id }
+  return async dispatch => {
+    const anecdoteToChange = state.find(n => n.id === id)
+    const changedAnecdote = {
+      ...anecdoteToChange,
+      votes: anecdoteToChange.votes + 1
+    }
+    const anecdotes = await anecdoteService.update(id, changedAnecdote)
+
+    dispatch({
+      type: 'VOTE',
+      data: { id }
+    })
+  }
+}
+*/
+
+export const vote = (id) => {
+  return async dispatch => {
+
+    dispatch({
+      type: 'VOTE',
+      data: { id }
+    })
   }
 }
 
