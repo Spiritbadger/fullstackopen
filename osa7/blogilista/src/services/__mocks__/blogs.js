@@ -1,50 +1,46 @@
 const blogs = [
   {
-    title: 'How to come up with an awesome blog title',
-    author: 'John Doe',
-    url: 'http://www.foo.bar',
+    title: 'Microservices and the First Law of Distributed Objects',
+    author: 'Martin Fowler',
+    url: 'https://martinfowler.com/articles/distributed-objects-microservices.html',
     user: {
-      username: 'testaaja',
-      name: 'Testi Mies',
-      id: '5dc30509319dd736d4213175'
+      username: 'hellas',
+      name: 'Arto Hellas',
+      id: '5c4857b1003ad1a6e6626931'
     },
-    likes: 1,
-    id: '5dc999682330e61f340ee4ba'
+    likes: 7,
+    id: '5c486996a1c337de9b1d6056'
   },
   {
-    title: 'Writing classless JavaScript with Hooks',
-    author: 'Awsum Writer',
-    url: 'http://www.bar.foo',
+    title: 'Things I Don’t Know as of 2018',
+    author: 'Dan Abramov',
+    url: 'https://overreacted.io/things-i-dont-know-as-of-2018/',
     user: {
-      username: 'testaaja',
-      name: 'Testi Mies',
-      id: '5dc30509319dd736d4213175'
+      username: 'hellas',
+      name: 'Arto Hellas',
+      id: '5c4857b1003ad1a6e6626931'
+    },
+    likes: 2,
+    id: '5c4869d8a1c337de9b1d6057'
+  },
+  {
+    title: 'FP vs. OO List Processing',
+    author: 'Robert C. Martin',
+    url: 'https://blog.cleancoder.com/uncle-bob/2018/12/17/FPvsOO-List-processing.html',
+    user: {
+      username: 'mluukkai',
+      name: 'Matti Luukkainen',
+      id: '5c486cc56656ace2a8edfc3a'
     },
     likes: 0,
-    id: '5dc9a3622330e61f340ee4bc'
-  },
-  {
-    title: 'Test one two',
-    author: 'Testi Mies',
-    url: 'www.barfoo.foobar',
-    user: {
-      username: 'testaaja',
-      name: 'Testi Mies',
-      id: '5dc30509319dd736d4213175'
-    },
-    likes: 1,
-    id: '5dcc35535176a01a4817f006'
+    id: '5c486ebcdb26d0e3c34a7ef8'
   }
 ]
-
-let token = null
 
 const getAll = () => {
   return Promise.resolve(blogs)
 }
 
-const setToken = newToken => {
-  token = `bearer ${newToken}`
-}
+const setToken = () => { }
 
 export default { getAll, setToken }

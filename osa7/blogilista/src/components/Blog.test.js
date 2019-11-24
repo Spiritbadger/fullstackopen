@@ -1,42 +1,41 @@
 import React from 'react'
-import { render, fireEvent } from '@testing-library/react'
+import { render, fireEvent } from 'react-testing-library'
 import Blog from './Blog'
 
-describe('Blog', () => {
+describe('<Blog />', () => {
   let component
+  const mockHandler = jest.fn()
+  const blog = {
+    title: 'First class tests',
+    author: 'Robert C. Martin',
+    url: 'https://cleancoder.com/first_class_tests',
+    likes: 5,
+    user: {
+      username: 'mluukkai',
+      name: 'Matti Luukkainen'
+    }
+  }
 
   beforeEach(() => {
-    const blog = {
-      title: 'My awesome test title',
-      author: 'Testi Testaaja',
-      url: 'http://www.foo.bar',
-      user: {
-        name: 'Testi Testaaja',
-      },
-      likes: 4
-    }
-
-    const user = {
-      name: 'Testi Testaaja'
-    }
-
-    component = render(
-      <Blog blog={blog} user={user} />
-    )
+    component = render(<Blog
+      blog={blog}
+      like={mockHandler}
+      remove={mockHandler}
+      creator={false}
+    />)
   })
 
-  test('at start full info is not displayed', () => {
-    const div = component.container.querySelector('.togglableContent')
-
-    expect(div).toHaveStyle('display: none')
+  test('at start only author and title shown', () => {
+    expect(component.container).toHaveTextContent(blog.author)
+    expect(component.container).toHaveTextContent(blog.title)
+    expect(component.container).not.toHaveTextContent(blog.url)
+    expect(component.container).not.toHaveTextContent('like')
   })
 
-  test('after clicking the blog title, full info is displayed', () => {
-    const blogTitle = component.getByText('My awesome test title')
-    fireEvent.click(blogTitle)
-
-    const div = component.container.querySelector('.togglableContent')
-    expect(div).not.toHaveStyle('display: none')
+  test('after click', () => {
+    const div = component.container.querySelector('.name')
+    fireEvent.click(div)
+    expect(component.container).toHaveTextContent(blog.url)
+    expect(component.container).toHaveTextContent('like')
   })
 })
-
