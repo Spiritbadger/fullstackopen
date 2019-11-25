@@ -1,12 +1,15 @@
 import React from 'react'
 import { useField } from '../hooks'
+import { connect } from 'react-redux'
+import { createBlog } from '../reducers/blogReducer'
+import { setNotification } from '../reducers/notificationReducer'
 
 const NewBlog = (props) => {
   const [title, titleReset] = useField('text')
   const [author, authorReset] = useField('text')
   const [url, urlReset] = useField('text')
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault()
     props.createBlog({
       title: title.value,
@@ -16,6 +19,7 @@ const NewBlog = (props) => {
     titleReset()
     authorReset()
     urlReset()
+    props.setNotification(`a new blog ${title.value} by ${author.value} added`, 'success', 5)
   }
 
   return (
@@ -41,4 +45,10 @@ const NewBlog = (props) => {
   )
 }
 
-export default NewBlog
+export default connect(
+  null,
+  {
+    createBlog,
+    setNotification
+  }
+)(NewBlog)

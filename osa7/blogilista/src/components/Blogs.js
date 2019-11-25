@@ -8,7 +8,7 @@ import { connect } from 'react-redux'
 import { like } from '../reducers/blogReducer'
 import { setNotification } from '../reducers/notificationReducer'
 
-const Blog = (props) => {
+const Blogs = (props) => {
   //const [expanded, setExpanded] = useState(false)
 
   const blogStyle = {
@@ -44,8 +44,6 @@ const Blog = (props) => {
     </div>
   )
 }
-
-
 /*
 Blog.propTypes = {
   blog: PropTypes.object.isRequired,
@@ -66,9 +64,9 @@ const mapDispatchToProps = {
   setNotification
 }
 
-const ConnectedBlog = connect(
+const ConnectedBlogs = connect(
   mapStateToProps,
   mapDispatchToProps
-)(Blog)
+)(Blogs)
 
-export default ConnectedBlog
+export default ConnectedBlogs

@@ -1,25 +1,36 @@
 import React, { useState, useEffect } from 'react'
-import Blog from './components/Blog'
+import {
+  BrowserRouter as Router,
+  Route, Link, Redirect, withRouter
+} from 'react-router-dom'
+import { connect } from 'react-redux'
+import Blogs from './components/Blogs'
 import blogService from './services/blogs'
 import loginService from './services/login'
 import NewBlog from './components/NewBlog'
 import Notification from './components/Notification'
-import Togglable from './components/Togglable'
 import { useField } from './hooks'
+import { setNotification } from './reducers/notificationReducer'
+import { initializeBlogs } from './reducers/blogReducer'
 
-const App = () => {
+const Blog = ({ blog }) => {
+  return (
+    <div>
+      <h2>{blog.content} by {blog.author}</h2>
+      <div>has {blog.votes} votes</div>
+      <div>for more information see <a href={blog.info}>{blog.info}</a></div>
+      <br />
+    </div>
+  )
+}
+
+const App = (props) => {
   const [username] = useField('text')
   const [password] = useField('password')
-  const [blogs, setBlogs] = useState([])
   const [user, setUser] = useState(null)
-  const [notification, setNotification] = useState({
-    message: null
-  })
 
   useEffect(() => {
-    blogService.getAll().then(blogs => {
-      setBlogs(blogs)
-    })
+    props.initializeBlogs()
   }, [])
 
   useEffect(() => {
@@ -31,9 +42,8 @@ const App = () => {
     }
   }, [])
 
-  const notify = (message, type = 'success') => {
-    setNotification({ message, type })
-    setTimeout(() => setNotification({ message: null }), 10000)
+  const notify = async (message, type = 'success') => {
+    props.setNotification(message, type, 5)
   }
 
   const handleLogin = async (event) => {
@@ -58,13 +68,7 @@ const App = () => {
     window.localStorage.removeItem('loggedBlogAppUser')
   }
 
-  const createBlog = async (blog) => {
-    const createdBlog = await blogService.create(blog)
-    newBlogRef.current.toggleVisibility()
-    setBlogs(blogs.concat(createdBlog))
-    notify(`a new blog ${createdBlog.title} by ${createdBlog.author} added`)
-  }
-
+  /*
   const likeBlog = async (blog) => {
     const likedBlog = { ...blog, likes: blog.likes + 1 }
     const updatedBlog = await blogService.update(likedBlog)
@@ -81,13 +85,15 @@ const App = () => {
     }
   }
 
+  */
+
   if (user === null) {
     return (
       <div>
+
         <h2>log in to application</h2>
 
-        <Notification notification={notification} />
-
+        <Notification />
         <form onSubmit={handleLogin}>
           <div>
             käyttäjätunnus
@@ -103,35 +109,20 @@ const App = () => {
     )
   }
 
-  const newBlogRef = React.createRef()
-
-  const byLikes = (b1, b2) => b2.likes - b1.likes
+  //const newBlogRef = React.createRef()
 
   return (
     <div>
       <h2>blogs</h2>
-
-      <Notification notification={notification} />
-
+      <Notification />
       <p>{user.name} logged in</p>
       <button onClick={handleLogout}>logout</button>
-
-      <Togglable buttonLabel='create new' ref={newBlogRef}>
-        <NewBlog createBlog={createBlog} />
-      </Togglable>
-
-      {blogs.sort(byLikes).map(blog =>
-        <Blog
-          key={blog.id}
-          blog={blog}
-          like={likeBlog}
-          remove={removeBlog}
-          user={user}
-          creator={blog.user.username === user.username}
-        />
-      )}
+      <NewBlog />
+      <Blogs />
     </div>
   )
 }
 
-export default App
+export default connect(
+  null, { setNotification, initializeBlogs }
+)(App)
