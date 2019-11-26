@@ -1,74 +1,27 @@
 import React from 'react'
-import {
-  BrowserRouter as Router,
-  Route, Link, Redirect, withRouter
-} from 'react-router-dom'
-//import PropTypes from 'prop-types'
-import { connect } from 'react-redux'
-import { like } from '../reducers/blogReducer'
-import { setNotification } from '../reducers/notificationReducer'
 
-const Blog = (props) => {
-  //const [expanded, setExpanded] = useState(false)
+const Blog = ({ blog, user }) => {
 
-  const blogStyle = {
-    paddingTop: 10,
-    paddingLeft: 2,
-    border: 'solid',
-    borderWidth: 1,
-    marginBottom: 5
+  const deleteUserBlog = () => {
+    if (user.name === blog.user.name) {
+      return (
+        <div>
+          <button onClick={() => { console.log('delete') }}>delete</button>
+        </div >
+      )
+    }
   }
 
-  const byLikes = (b1, b2) => b2.likes - b1.likes
-
-  /*
-  const details = () => (
-    <div className='details'>
-      <a href={blog.url}>{blog.url}</a>
-      <div>{blog.likes} likes
-        <button onClick={() => like(blog)}>like</button>
-      </div>
-      <div>added by {blog.user.name}</div>
-      {creator && (<button onClick={() => remove(blog)}>remove </button>)}
-    </div>
-  )
-*/
   return (
     <div>
-      {props.blogs.sort(byLikes).map(blog =>
-        <div key={blog.id} style={blogStyle}>
-          {blog.title} {blog.author}
-        </div>
-      )
-      }
+      <h2>{blog.title} {blog.author}</h2>
+      <a href={blog.url}>{blog.url}</a>
+      <div>{blog.likes} likes <button onClick={() => { console.log('like') }}>like</button></div>
+      <div>added by {blog.author}</div>
+      {deleteUserBlog()}
+      <br />
     </div>
   )
 }
 
-
-/*
-Blog.propTypes = {
-  blog: PropTypes.object.isRequired,
-  like: PropTypes.func.isRequired,
-  remove: PropTypes.func.isRequired,
-  creator: PropTypes.bool.isRequired
-}
-*/
-
-const mapStateToProps = (state) => {
-  return {
-    blogs: state.blogs,
-  }
-}
-
-const mapDispatchToProps = {
-  like,
-  setNotification
-}
-
-const ConnectedBlog = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Blog)
-
-export default ConnectedBlog
+export default Blog

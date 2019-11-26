@@ -2,6 +2,7 @@ import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import Blogs from './components/Blogs'
 import Users from './components/Users'
+import Blog from './components/Blog'
 import {
   BrowserRouter as Router,
   Route, Link, Redirect, withRouter
@@ -50,6 +51,10 @@ const App = (props) => {
   }
 
   */
+
+  const blogById = (id) =>
+    props.blogs.find(a => a.id === id)
+
   if (props.user.length === 0) {
     return (
       <div>
@@ -74,6 +79,9 @@ const App = (props) => {
           </div>
         } />
         <Route exact path="/users" render={() => <Users />} />
+        <Route exact path="/blogs/:id" render={({ match }) =>
+          <Blog blog={blogById(match.params.id)} user={props.user} />}
+        />
       </Router>
     </div>
   )
@@ -81,7 +89,8 @@ const App = (props) => {
 
 const mapStateToProps = (state) => {
   return {
-    user: state.user
+    user: state.user,
+    blogs: state.blogs
   }
 }
 
