@@ -1,6 +1,11 @@
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import Blogs from './components/Blogs'
+import Users from './components/Users'
+import {
+  BrowserRouter as Router,
+  Route, Link, Redirect, withRouter
+} from 'react-router-dom'
 //import blogService from './services/blogs'
 //import loginService from './services/login'
 import NewBlog from './components/NewBlog'
@@ -9,6 +14,7 @@ import Notification from './components/Notification'
 import { setNotification } from './reducers/notificationReducer'
 import { initializeBlogs } from './reducers/blogReducer'
 import { initializeUser, logout } from './reducers/userReducer'
+import { initializeUsers } from './reducers/usersReducer'
 import LoginForm from './components/LoginForm'
 
 const App = (props) => {
@@ -18,10 +24,8 @@ const App = (props) => {
 
   useEffect(() => {
     props.initializeUser()
-  }, [])
-
-  useEffect(() => {
     props.initializeBlogs()
+    props.initializeUsers()
   }, [])
 
   const handleLogout = () => {
@@ -58,12 +62,19 @@ const App = (props) => {
 
   return (
     <div>
-      <h2>blogs</h2>
-      <Notification />
-      <p>{props.user.name} logged in</p>
-      <button onClick={handleLogout}>logout</button>
-      <NewBlog />
-      <Blogs />
+      <Router>
+        <h2>blogs</h2>
+        <Notification />
+        <p>{props.user.name} logged in</p>
+        <button onClick={handleLogout}>logout</button>
+        <Route exact path="/" render={() =>
+          <div>
+            <NewBlog />
+            <Blogs />
+          </div>
+        } />
+        <Route exact path="/users" render={() => <Users />} />
+      </Router>
     </div>
   )
 }
@@ -75,5 +86,5 @@ const mapStateToProps = (state) => {
 }
 
 export default connect(
-  mapStateToProps, { setNotification, initializeBlogs, initializeUser, logout }
+  mapStateToProps, { setNotification, initializeBlogs, initializeUser, logout, initializeUsers }
 )(App)
