@@ -1,8 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import {
-  BrowserRouter as Router,
-  Route, Link, Redirect, withRouter
+  withRouter
 } from 'react-router-dom'
 import { like, deleteBlog } from '../reducers/blogReducer'
 import { setNotification } from '../reducers/notificationReducer'
@@ -12,13 +11,9 @@ let Blog = (props) => {
   const removeBlog = async () => {
     const ok = window.confirm(`remove blog ${props.blog.title} by ${props.blog.author}`)
     if (ok) {
-      /*
-      const updatedBlog = await blogService.remove(blog)
-      setBlogs(blogs.filter(b => b.id !== blog.id))
-      */
       props.deleteBlog(props.blog)
-      props.setNotification(`blog ${props.blog.title} by ${props.blog.author} removed!`)
       props.history.push('/')
+      props.setNotification(`blog ${props.blog.title} by ${props.blog.author} removed!`, 'success', 10)
     }
   }
 
@@ -34,7 +29,7 @@ let Blog = (props) => {
 
   const addLike = (blog) => {
     props.like(blog)
-    props.setNotification(`blog ${blog.title} by ${blog.author} liked!`, 10)
+    props.setNotification(`blog ${blog.title} by ${blog.author} liked!`, 'success', 10)
   }
 
   return (

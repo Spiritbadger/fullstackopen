@@ -19,7 +19,7 @@ const NewBlog = (props) => {
     titleReset()
     authorReset()
     urlReset()
-    props.setNotification(`a new blog ${title.value} by ${author.value} added`, 'success', 5)
+    props.setNotification(`a new blog ${title.value} by ${author.value} added`, 'success', 10)
   }
 
   return (

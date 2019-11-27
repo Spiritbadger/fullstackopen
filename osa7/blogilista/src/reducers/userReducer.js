@@ -34,13 +34,13 @@ export const login = ({ username, password }) => {
       username: username,
       password: password
     })
-
     window.localStorage.setItem('loggedBlogAppUser', JSON.stringify(user))
     blogService.setToken(user.token)
     dispatch({
       type: 'LOGIN',
       user
     })
+
   }
 }
 

@@ -1,6 +1,5 @@
 import React from 'react'
 import { useField } from '../hooks'
-//import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { login } from '../reducers/userReducer'
 import { setNotification } from '../reducers/notificationReducer'
@@ -17,7 +16,7 @@ const LoginForm = (props) => {
         password: password.value,
       })
     } catch (exception) {
-      props.setNotification('wrong username of password', 'error')
+      props.setNotification('wrong username of password', 'error', 10)
       usernameReset()
       passwordReset()
     }
@@ -39,14 +38,6 @@ const LoginForm = (props) => {
     </div>
   )
 }
-
-/*
-LoginForm.propTypes = {
-  handleSubmit: PropTypes.func.isRequired,
-  username: PropTypes.object.isRequired,
-  password: PropTypes.object.isRequired
-}
-*/
 
 export default connect(
   null,

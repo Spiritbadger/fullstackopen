@@ -1,9 +1,5 @@
 import React from 'react'
-import {
-  BrowserRouter as Router,
-  Route, Link, Redirect, withRouter
-} from 'react-router-dom'
-//import PropTypes from 'prop-types'
+import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 
 const Users = (props) => {
@@ -18,7 +14,7 @@ const Users = (props) => {
           </tr>
           {props.users.map(user =>
             <tr key={user.id}>
-              <td>{user.name}</td>
+              <td><Link to={`/users/${user.id}`}>{user.name}</Link></td>
               <td>{user.blogs.length}</td>
             </tr>
           )
@@ -35,7 +31,6 @@ const mapStateToProps = (state) => {
     users: state.users,
   }
 }
-
 
 const ConnectedUsers = connect(
   mapStateToProps
