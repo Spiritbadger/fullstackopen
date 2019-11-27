@@ -3,6 +3,7 @@ import { useField } from '../hooks'
 import { connect } from 'react-redux'
 import { createBlog } from '../reducers/blogReducer'
 import { setNotification } from '../reducers/notificationReducer'
+import { Form, Button } from 'react-bootstrap'
 
 const NewBlog = (props) => {
   const [title, titleReset] = useField('text')
@@ -26,7 +27,7 @@ const NewBlog = (props) => {
     <div>
       <h2>create new</h2>
 
-      <form onSubmit={handleSubmit}>
+      <Form onSubmit={handleSubmit}>
         <div>
           title: <input {...title} />
         </div>
@@ -36,8 +37,8 @@ const NewBlog = (props) => {
         <div>
           url: <input {...url} />
         </div>
-        <button type='submit'>create</button>
-      </form>
+        <Button type='submit'>create</Button>
+      </Form>
     </div>
   )
 }

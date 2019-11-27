@@ -3,6 +3,7 @@ import { useField } from '../hooks'
 import { connect } from 'react-redux'
 import { login } from '../reducers/userReducer'
 import { setNotification } from '../reducers/notificationReducer'
+import { Form, Button } from 'react-bootstrap'
 
 const LoginForm = (props) => {
   const [username, usernameReset] = useField('text')
@@ -24,15 +25,15 @@ const LoginForm = (props) => {
 
   return (
     <div>
-      <form onSubmit={handleSubmit}>
+      <Form onSubmit={handleSubmit}>
         <div>
           username <input {...username} />
         </div>
         <div>
           password <input {...password} />
         </div>
-        <button type="submit">login</button>
-      </form>
+        <Button type="submit">login</Button>
+      </Form>
     </div>
   )
 }

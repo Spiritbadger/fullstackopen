@@ -1,6 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { logout } from '../reducers/userReducer'
+import { Button } from 'react-bootstrap'
 
 const Menu = (props) => {
   const padding = {
@@ -15,7 +16,7 @@ const Menu = (props) => {
     <div>
       <a href='/' style={padding}>blogs</a>
       <a href='/users' style={padding}>users</a>
-      {props.user.name} logged in <button onClick={handleLogout}>logout</button>
+      {props.user.name} logged in <Button onClick={handleLogout}>logout</Button>
     </div>
   )
 }

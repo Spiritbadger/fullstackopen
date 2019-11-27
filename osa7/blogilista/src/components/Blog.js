@@ -5,6 +5,7 @@ import {
 } from 'react-router-dom'
 import { like, deleteBlog } from '../reducers/blogReducer'
 import { setNotification } from '../reducers/notificationReducer'
+import { Button } from 'react-bootstrap'
 
 let Blog = (props) => {
 
@@ -21,7 +22,7 @@ let Blog = (props) => {
     if (props.user.name === props.blog.user.name) {
       return (
         <div>
-          <button onClick={() => removeBlog(props.blog)}>delete</button>
+          <Button onClick={() => removeBlog(props.blog)}>delete</Button>
         </div >
       )
     }
@@ -36,7 +37,7 @@ let Blog = (props) => {
     <div>
       <h2>{props.blog.title} {props.blog.author}</h2>
       <a href={props.blog.url}>{props.blog.url}</a>
-      <div>{props.blog.likes} likes <button onClick={() => addLike(props.blog)}>like</button></div>
+      <div>{props.blog.likes} likes <Button onClick={() => addLike(props.blog)}>like</Button></div>
       <div>added by {props.blog.author}</div>
       {deleteUserBlog()}
       <br />
