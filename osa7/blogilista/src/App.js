@@ -36,7 +36,7 @@ const App = (props) => {
 
   if (props.user.length === 0) {
     return (
-      <div class="container">
+      <div className="container">
         <h2>log in to application</h2>
         <Notification />
         <LoginForm />
@@ -45,7 +45,7 @@ const App = (props) => {
   }
 
   return (
-    <div class="container">
+    <div className="container">
       <Router>
         <Menu />
         <h2>Blog app</h2>

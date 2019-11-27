@@ -15,8 +15,7 @@ const Menu = (props) => {
     <div>
       <a href='/' style={padding}>blogs</a>
       <a href='/users' style={padding}>users</a>
-      {props.user.name} logged in
-      <button onClick={handleLogout}>logout</button>
+      {props.user.name} logged in <button onClick={handleLogout}>logout</button>
     </div>
   )
 }

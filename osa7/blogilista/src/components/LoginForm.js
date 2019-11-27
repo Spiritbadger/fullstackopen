@@ -26,12 +26,10 @@ const LoginForm = (props) => {
     <div>
       <form onSubmit={handleSubmit}>
         <div>
-          username
-          <input {...username} />
+          username <input {...username} />
         </div>
         <div>
-          password
-          <input {...password} />
+          password <input {...password} />
         </div>
         <button type="submit">login</button>
       </form>
