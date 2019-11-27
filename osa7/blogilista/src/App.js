@@ -80,7 +80,7 @@ const App = (props) => {
         } />
         <Route exact path="/users" render={() => <Users />} />
         <Route exact path="/blogs/:id" render={({ match }) =>
-          <Blog blog={blogById(match.params.id)} user={props.user} />}
+          <Blog blog={blogById(match.params.id)} />}
         />
       </Router>
     </div>
