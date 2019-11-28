@@ -17,7 +17,7 @@ const LoginForm = (props) => {
         password: password.value,
       })
     } catch (exception) {
-      props.setNotification('wrong username of password', 'error', 10)
+      props.setNotification('wrong username of password', 'danger', 10)
       usernameReset()
       passwordReset()
     }
@@ -26,13 +26,19 @@ const LoginForm = (props) => {
   return (
     <div>
       <Form onSubmit={handleSubmit}>
-        <div>
-          username <input {...username} />
-        </div>
-        <div>
-          password <input {...password} />
-        </div>
-        <Button type="submit">login</Button>
+        <Form.Group>
+          <Form.Label>username:</Form.Label>
+          <Form.Control
+            {...username}
+          />
+          <Form.Label>password:</Form.Label>
+          <Form.Control
+            {...password}
+          />
+          <Button variant="primary" type="submit">
+            login
+          </Button>
+        </Form.Group>
       </Form>
     </div>
   )

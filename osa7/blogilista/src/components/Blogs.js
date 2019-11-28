@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { like } from '../reducers/blogReducer'
 import { setNotification } from '../reducers/notificationReducer'
+import { Table } from 'react-bootstrap'
 
 const Blogs = (props) => {
 
@@ -10,7 +11,7 @@ const Blogs = (props) => {
 
   return (
     <div>
-      <table className="table striped">
+      <Table>
         <tbody>
           {props.blogs.sort(byLikes).map(blog =>
             <tr key={blog.id}>
@@ -21,7 +22,7 @@ const Blogs = (props) => {
           )
           }
         </tbody>
-      </table>
+      </Table>
     </div>
   )
 }

@@ -2,7 +2,6 @@ import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import Blogs from './components/Blogs'
 import Users from './components/Users'
-import Togglable from './components/Togglable'
 import Blog from './components/Blog'
 import User from './components/User'
 import Menu from './components/Menu'
@@ -17,6 +16,7 @@ import { initializeBlogs } from './reducers/blogReducer'
 import { initializeUser, logout } from './reducers/userReducer'
 import { initializeUsers } from './reducers/usersReducer'
 import LoginForm from './components/LoginForm'
+import { Jumbotron } from 'react-bootstrap'
 
 const App = (props) => {
 
@@ -48,13 +48,14 @@ const App = (props) => {
     <div className="container">
       <Router>
         <Menu />
-        <h2>Blog app</h2>
+        <Jumbotron>
+          <h1>Blog app</h1>
+        </Jumbotron>
         <Notification />
         <Route exact path="/" render={() =>
           <div>
-            <Togglable buttonLabel="create new" ref={blogFormRef}>
-              <NewBlog />
-            </Togglable>
+            <h2>Blogs</h2>
+            <NewBlog />
             <Blogs />
           </div>
         } />

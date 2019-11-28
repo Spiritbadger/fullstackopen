@@ -3,7 +3,7 @@ import { useField } from '../hooks'
 import { connect } from 'react-redux'
 import { createBlog } from '../reducers/blogReducer'
 import { setNotification } from '../reducers/notificationReducer'
-import { Form, Button } from 'react-bootstrap'
+import { Accordion, Card, Form, Button } from 'react-bootstrap'
 
 const NewBlog = (props) => {
   const [title, titleReset] = useField('text')
@@ -12,6 +12,7 @@ const NewBlog = (props) => {
 
   const handleSubmit = async (event) => {
     event.preventDefault()
+    console.log(event)
     props.createBlog({
       title: title.value,
       author: author.value,
@@ -25,20 +26,37 @@ const NewBlog = (props) => {
 
   return (
     <div>
-      <h2>create new</h2>
-
-      <Form onSubmit={handleSubmit}>
-        <div>
-          title: <input {...title} />
-        </div>
-        <div>
-          author: <input {...author} />
-        </div>
-        <div>
-          url: <input {...url} />
-        </div>
-        <Button type='submit'>create</Button>
-      </Form>
+      <Accordion>
+        <Card>
+          <Card.Header>
+            <Accordion.Toggle as={Button} variant="link" eventKey="0">
+              Create new
+      </Accordion.Toggle>
+          </Card.Header>
+          <Accordion.Collapse eventKey="0">
+            <Card.Body><Form onSubmit={handleSubmit}>
+              <Form.Group>
+                <Form.Label>title:</Form.Label>
+                <Form.Control
+                  {...title}
+                />
+                <Form.Label>author:</Form.Label>
+                <Form.Control
+                  {...author}
+                />
+                <Form.Label>url:</Form.Label>
+                <Form.Control
+                  {...url}
+                />
+                <Button variant="primary" type='submit'>create</Button>
+              </Form.Group>
+              <Accordion.Toggle as={Button} variant="link" eventKey="0">
+                cancel
+              </Accordion.Toggle>
+            </Form></Card.Body>
+          </Accordion.Collapse>
+        </Card>
+      </Accordion>
     </div>
   )
 }
