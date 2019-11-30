@@ -26,8 +26,6 @@ const App = (props) => {
     props.initializeUsers()
   }, [])
 
-  const blogFormRef = React.createRef()
-
   const blogById = (id) =>
     props.blogs.find(a => a.id === id)
 
