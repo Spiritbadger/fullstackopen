@@ -3,11 +3,24 @@ import { connect } from 'react-redux'
 import {
   withRouter
 } from 'react-router-dom'
-import { like, deleteBlog } from '../reducers/blogReducer'
+import { like, deleteBlog, commentBlog } from '../reducers/blogReducer'
 import { setNotification } from '../reducers/notificationReducer'
-import { Button, Table } from 'react-bootstrap'
+import { Button, Table, Form } from 'react-bootstrap'
+import { useField } from '../hooks'
 
 let Blog = (props) => {
+
+  const [content, contentReset] = useField('text')
+
+  const handleSubmit = async (event) => {
+    event.preventDefault()
+    console.log(event)
+    props.commentBlog(props.blog, {
+      content: content.value,
+    })
+    contentReset()
+    props.history.push('/')
+  }
 
   const removeBlog = async () => {
     const ok = window.confirm(`remove blog ${props.blog.title} by ${props.blog.author}`)
@@ -29,19 +42,62 @@ let Blog = (props) => {
   const addLike = (blog) => {
     props.like(blog)
     props.setNotification(`blog ${blog.title} by ${blog.author} liked!`, 'success', 10)
+    props.history.push('/')
   }
 
   return (
     <div>
-      <h2>{props.blog.title} {props.blog.author}</h2>
-      <a href={props.blog.url}>{props.blog.url}</a>
-      <div>{props.blog.likes} likes <Button onClick={() => addLike(props.blog)}>like</Button></div>
-      <div>added by {props.blog.author}</div>
-      {deleteUserBlog()}
-      <br />
+      <h2>{props.blog.title} by {props.blog.author}</ h2>
+      <Table>
+        <tbody>
+          <tr>
+            <td>
+              <a href={props.blog.url}>{props.blog.url}</a>
+            </td>
+          </tr>
+          <tr>
+            <td>{props.blog.likes} likes <Button onClick={() => addLike(props.blog)}>like</Button></td>
+          </tr>
+          <tr>
+            <td>
+              added by {props.blog.author}
+            </td>
+          </tr>
+          <tr>
+            <td>
+              {deleteUserBlog()}
+            </td>
+          </tr>
+          <tr>
+            <td >
+              <h3>comments:</h3>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <Form onSubmit={handleSubmit}>
+                <Form.Group>
+                  <Form.Label>comment:</Form.Label>
+                  <Form.Control
+                    {...content}
+                  />
+                  <Button variant="primary" type='submit'>add comment</Button>
+                </Form.Group>
+              </Form>
+            </td>
+          </tr>
+          {props.blog.comments.map(comment =>
+            <tr key={comment.id}>
+              <td >
+                {comment.content}
+              </td>
+            </tr>
+          )
+          }
+        </tbody>
+      </Table>
     </div>
   )
-
 }
 
 Blog = withRouter(Blog)
@@ -55,7 +111,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = {
   like,
   deleteBlog,
-  setNotification
+  setNotification,
+  commentBlog
 }
 
 const ConnectedBlog = connect(

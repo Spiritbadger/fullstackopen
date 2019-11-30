@@ -14,20 +14,20 @@ const Menu = (props) => {
   }
 
   return (
-    <Navbar collapseOnSelect expand="lg" bg="light" variant="light">
+    <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
       <Navbar.Toggle aria-controls="responsive-navbar-nav" />
       <Navbar.Collapse id="responsive-navbar-nav">
         <Nav className="mr-auto">
           <Nav.Link href="#" as="span">
-            <Link style={padding} to="/">blogs</Link>
+            <Link style={padding} to="/">Blogs</Link>
           </Nav.Link>
           <Nav.Link href="#" as="span">
-            <Link style={padding} to="/users">users</Link>
+            <Link style={padding} to="/users">Users</Link>
           </Nav.Link>
-          <Navbar.Text>
-            <Button variant="outline-primary" className="mr-sm-2" onClick={handleLogout}>logout</Button> {props.user.name} logged in
-          </Navbar.Text>
         </Nav>
+        <Navbar.Text>
+          {props.user.name} logged in <Button variant="outline-primary" className="mr-sm-2" onClick={handleLogout}>Logout</Button>
+        </Navbar.Text>
       </Navbar.Collapse>
     </Navbar>
   )
