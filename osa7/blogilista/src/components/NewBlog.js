@@ -29,7 +29,7 @@ const NewBlog = (props) => {
       <Accordion>
         <Card>
           <Card.Header>
-            <Accordion.Toggle as={Button} variant="link" eventKey="0">
+            <Accordion.Toggle as={Button} variant="link" eventKey="0" id="create_new">
               Create new
       </Accordion.Toggle>
           </Card.Header>
@@ -37,18 +37,18 @@ const NewBlog = (props) => {
             <Card.Body><Form onSubmit={handleSubmit}>
               <Form.Group>
                 <Form.Label>title:</Form.Label>
-                <Form.Control
+                <Form.Control id="title"
                   {...title}
                 />
                 <Form.Label>author:</Form.Label>
-                <Form.Control
+                <Form.Control id="author"
                   {...author}
                 />
                 <Form.Label>url:</Form.Label>
-                <Form.Control
+                <Form.Control id="url"
                   {...url}
                 />
-                <Button variant="primary" type='submit'>create</Button>
+                <Button variant="primary" type='submit' id="create">create</Button>
               </Form.Group>
               <Accordion.Toggle as={Button} variant="link" eventKey="0">
                 cancel

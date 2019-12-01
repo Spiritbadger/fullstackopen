@@ -34,7 +34,7 @@ let Blog = (props) => {
   const deleteUserBlog = () => {
     if (props.user.name === props.blog.user.name) {
       return (
-        <Button onClick={() => removeBlog(props.blog)}>delete</Button>
+        <Button onClick={() => removeBlog(props.blog)} id="delete">delete</Button>
       )
     }
   }
@@ -56,7 +56,7 @@ let Blog = (props) => {
             </td>
           </tr>
           <tr>
-            <td>{props.blog.likes} likes <Button onClick={() => addLike(props.blog)}>like</Button></td>
+            <td>{props.blog.likes} likes <Button onClick={() => addLike(props.blog)} id="like">like</Button></td>
           </tr>
           <tr>
             <td>
@@ -78,7 +78,7 @@ let Blog = (props) => {
               <Form onSubmit={handleSubmit}>
                 <Form.Group>
                   <Form.Label>comment:</Form.Label>
-                  <Form.Control
+                  <Form.Control id="comment"
                     {...content}
                   />
                   <Button variant="primary" type='submit'>add comment</Button>

@@ -28,11 +28,11 @@ const LoginForm = (props) => {
       <Form onSubmit={handleSubmit}>
         <Form.Group>
           <Form.Label>username:</Form.Label>
-          <Form.Control
+          <Form.Control id="username"
             {...username}
           />
           <Form.Label>password:</Form.Label>
-          <Form.Control
+          <Form.Control id="password"
             {...password}
           />
           <Button variant="primary" type="submit">

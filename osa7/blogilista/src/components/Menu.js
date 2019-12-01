@@ -19,14 +19,14 @@ const Menu = (props) => {
       <Navbar.Collapse id="responsive-navbar-nav">
         <Nav className="mr-auto">
           <Nav.Link href="#" as="span">
-            <Link style={padding} to="/">Blogs</Link>
+            <Link style={padding} to="/" id="nav_blogs">Blogs</Link>
           </Nav.Link>
           <Nav.Link href="#" as="span">
-            <Link style={padding} to="/users">Users</Link>
+            <Link style={padding} to="/users" id="nav_users">Users</Link>
           </Nav.Link>
         </Nav>
         <Navbar.Text>
-          {props.user.name} logged in <Button variant="outline-primary" className="mr-sm-2" onClick={handleLogout}>Logout</Button>
+          {props.user.name} logged in <Button variant="outline-primary" className="mr-sm-2" onClick={handleLogout} id="nav_logout">Logout</Button>
         </Navbar.Text>
       </Navbar.Collapse>
     </Navbar>
