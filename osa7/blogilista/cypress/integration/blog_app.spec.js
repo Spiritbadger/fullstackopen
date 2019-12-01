@@ -96,6 +96,18 @@ describe('Blog app ', function () {
 
     })
 
+    it('user can like blog', function () {
+      cy.contains('A blog added by cypress Cypress Tester')
+        .click()
+      cy.contains('0 likes')
+      cy.get('#like')
+        .click()
+      cy.contains('A blog added by cypress Cypress Tester')
+        .click()
+      cy.contains('1 likes')
+
+    })
+
   })
 
 })
