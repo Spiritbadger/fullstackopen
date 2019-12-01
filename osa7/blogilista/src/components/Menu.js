@@ -1,16 +1,18 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { logout } from '../reducers/userReducer'
+import { withRouter } from 'react-router-dom'
 import { Button, Navbar, Nav } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 
-const Menu = (props) => {
+const MenuNoHistory = (props) => {
   const padding = {
     paddingRight: 5,
   }
 
   const handleLogout = () => {
     props.logout()
+    props.history.push('/')
   }
 
   return (
@@ -32,6 +34,8 @@ const Menu = (props) => {
     </Navbar>
   )
 }
+
+const Menu = withRouter(MenuNoHistory)
 
 const mapStateToProps = (state) => {
   return {

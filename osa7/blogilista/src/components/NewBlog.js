@@ -31,7 +31,7 @@ const NewBlog = (props) => {
           <Card.Header>
             <Accordion.Toggle as={Button} variant="link" eventKey="0" id="create_new">
               Create new
-      </Accordion.Toggle>
+            </Accordion.Toggle>
           </Card.Header>
           <Accordion.Collapse eventKey="0">
             <Card.Body><Form onSubmit={handleSubmit}>

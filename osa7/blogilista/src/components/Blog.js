@@ -1,14 +1,12 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import {
-  withRouter
-} from 'react-router-dom'
+import { withRouter } from 'react-router-dom'
 import { like, deleteBlog, commentBlog } from '../reducers/blogReducer'
 import { setNotification } from '../reducers/notificationReducer'
 import { Button, Table, Form } from 'react-bootstrap'
 import { useField } from '../hooks'
 
-let Blog = (props) => {
+const BlogNoHistory = (props) => {
 
   const [content, contentReset] = useField('text')
 
@@ -19,7 +17,6 @@ let Blog = (props) => {
       content: content.value,
     })
     contentReset()
-    props.history.push('/')
   }
 
   const removeBlog = async () => {
@@ -42,7 +39,6 @@ let Blog = (props) => {
   const addLike = (blog) => {
     props.like(blog)
     props.setNotification(`blog ${blog.title} by ${blog.author} liked!`, 'success', 10)
-    props.history.push('/')
   }
 
   return (
@@ -100,11 +96,11 @@ let Blog = (props) => {
   )
 }
 
-Blog = withRouter(Blog)
+const Blog = withRouter(BlogNoHistory)
 
 const mapStateToProps = (state) => {
   return {
-    user: state.user,
+    user: state.user
   }
 }
 

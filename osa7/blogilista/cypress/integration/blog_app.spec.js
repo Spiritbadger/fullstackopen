@@ -10,7 +10,6 @@ describe('Blog app ', function () {
     cy.request('POST', 'http://localhost:3003/api/users/', user)
     cy.visit('http://localhost:3000')
     cy.contains('log in to application')
-
   })
 
   describe('when not logged in', function () {
@@ -25,7 +24,6 @@ describe('Blog app ', function () {
         .click()
       cy.contains('Cypress Tester logged in')
     })
-
   })
 
   describe('when logged in', function () {
@@ -58,7 +56,6 @@ describe('Blog app ', function () {
         .click()
       cy.contains('A blog added by cypress Cypress Tester')
     })
-
   })
 
   describe('when theres initially a blog created', function () {
@@ -90,10 +87,7 @@ describe('Blog app ', function () {
         .type('A comment added by cypress')
       cy.contains('add comment')
         .click()
-      cy.contains('A blog added by cypress Cypress Tester')
-        .click()
       cy.contains('A comment added by cypress')
-
     })
 
     it('user can like blog', function () {
@@ -102,12 +96,8 @@ describe('Blog app ', function () {
       cy.contains('0 likes')
       cy.get('#like')
         .click()
-      cy.contains('A blog added by cypress Cypress Tester')
-        .click()
       cy.contains('1 likes')
-
     })
 
   })
-
 })
