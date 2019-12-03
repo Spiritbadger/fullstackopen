@@ -1,10 +1,15 @@
 import React, { useState } from 'react'
 
-const Authors = (props) => {
-  if (!props.show) {
+const Authors = ({ result, show }) => {
+  if (!show) {
     return null
   }
-  const authors = []
+
+  if (result.loading) {
+    return <div>loading...</div>
+  }
+
+  const authors = result.data.allAuthors
 
   return (
     <div>
