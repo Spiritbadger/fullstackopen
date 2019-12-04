@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import Authors from './components/Authors'
 import Books from './components/Books'
 import NewBook from './components/NewBook'
+import AuthorForm from './components/AuthorForm'
 import { Query, Mutation } from 'react-apollo'
 import { gql } from 'apollo-boost'
 
@@ -41,6 +42,15 @@ mutation addBook($title: String!, $author: String!, $publishedInt: Int!, $genres
 }
 `
 
+const EDIT_AUTHOR = gql`
+mutation editAuthor($name: String!, $birthYearInt: Int!) {
+  editAuthor(name: $name, setBornTo: $birthYearInt)  {
+    name
+    born
+  }
+}
+`
+
 const App = () => {
   const [page, setPage] = useState('authors')
 
@@ -51,13 +61,22 @@ const App = () => {
         <button onClick={() => setPage('books')}>books</button>
         <button onClick={() => setPage('add')}>add book</button>
       </div>
-      <Query query={ALL_AUTHORS}>
+      <Query query={ALL_AUTHORS} pollInterval={2000}>
         {(result) => <Authors show={page === 'authors'} result={result} />}
       </Query>
 
-      <Query query={ALL_BOOKS}>
+      <Mutation
+        mutation={EDIT_AUTHOR}
+      >
+        {(editAuthor) =>
+          <AuthorForm show={page === 'authors'} editAuthor={editAuthor} />
+        }
+      </Mutation>
+
+      <Query query={ALL_BOOKS} pollInterval={2000}>
         {(result) => <Books show={page === 'books'} result={result} />}
       </Query>
+
       <Mutation mutation={ADD_BOOK}>
         {(addBook) =>
           <NewBook show={page === 'add'} addBook={addBook} />
