@@ -1,4 +1,16 @@
 import React from 'react'
+import AuthorForm from './AuthorForm'
+import { Mutation } from 'react-apollo'
+import { gql } from 'apollo-boost'
+
+const EDIT_AUTHOR = gql`
+mutation editAuthor($name: String!, $birthYearInt: Int!) {
+  editAuthor(name: $name, setBornTo: $birthYearInt)  {
+    name
+    born
+  }
+}
+`
 
 const Authors = ({ result, show }) => {
   if (!show) {
@@ -34,7 +46,13 @@ const Authors = ({ result, show }) => {
           )}
         </tbody>
       </table>
-
+      <Mutation
+        mutation={EDIT_AUTHOR}
+      >
+        {(editAuthor) =>
+          <AuthorForm editAuthor={editAuthor} authors={authors} />
+        }
+      </Mutation>
     </div>
   )
 }

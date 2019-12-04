@@ -4,10 +4,6 @@ const AuthorForm = (props) => {
   const [name, setName] = useState('')
   const [birthYear, setBirthYear] = useState('')
 
-  if (!props.show) {
-    return null
-  }
-
   const submit = async (e) => {
     e.preventDefault()
     const birthYearInt = parseInt(birthYear)
@@ -24,10 +20,14 @@ const AuthorForm = (props) => {
       <h2>set birthyear</h2>
       <form onSubmit={submit}>
         <div>
-          name <input
-            value={name}
-            onChange={({ target }) => setName(target.value)}
-          />
+          <label>
+            name:
+          <select value={name} onChange={({ target }) => setName(target.value)}>
+              {props.authors.map(a =>
+                <option key={a.name} value={a.name}>{a.name}</option>
+              )}
+            </select>
+          </label>
         </div>
         <div>
           born <input
