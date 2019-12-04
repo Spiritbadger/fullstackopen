@@ -43,6 +43,13 @@ mutation addBook($title: String!, $author: String!, $publishedInt: Int!, $genres
 
 const App = () => {
   const [page, setPage] = useState('authors')
+  const [errorMessage, setErrorMessage] = useState(null)
+  const handleError = (error) => {
+    setErrorMessage(error.graphQLErrors[0].message)
+    setTimeout(() => {
+      setErrorMessage(null)
+    }, 10000)
+  }
 
   return (
     <div>
@@ -51,6 +58,11 @@ const App = () => {
         <button onClick={() => setPage('books')}>books</button>
         <button onClick={() => setPage('add')}>add book</button>
       </div>
+      {errorMessage &&
+        <div style={{ color: 'red' }}>
+          {errorMessage}
+        </div>
+      }
       <Query query={ALL_AUTHORS} pollInterval={2000}>
         {(result) => <Authors show={page === 'authors'} result={result} />}
       </Query>
@@ -59,7 +71,7 @@ const App = () => {
         {(result) => <Books show={page === 'books'} result={result} />}
       </Query>
 
-      <Mutation mutation={ADD_BOOK}>
+      <Mutation mutation={ADD_BOOK} onError={handleError}>
         {(addBook) =>
           <NewBook show={page === 'add'} addBook={addBook} />
         }
