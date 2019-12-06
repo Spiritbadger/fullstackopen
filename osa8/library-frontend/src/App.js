@@ -29,12 +29,14 @@ const ADD_BOOK = gql`
 mutation addBook($title: String!, $author: String!, $publishedInt: Int!, $genres: [String!]) {
   addBook(
     title: $title,
-    author: $author,
+    name: $author,
     published: $publishedInt,
     genres: $genres
   ) {
     title
-    author
+    author {
+      name
+    }
     published
     genres
   }
@@ -64,7 +66,7 @@ const App = () => {
         </div>
       }
       <Query query={ALL_AUTHORS} pollInterval={2000}>
-        {(result) => <Authors show={page === 'authors'} result={result} />}
+        {(result) => <Authors show={page === 'authors'} result={result} handleError={handleError} />}
       </Query>
 
       <Query query={ALL_BOOKS} pollInterval={2000}>

@@ -12,7 +12,7 @@ mutation editAuthor($name: String!, $birthYearInt: Int!) {
 }
 `
 
-const Authors = ({ result, show }) => {
+const Authors = ({ result, show, handleError }) => {
   if (!show) {
     return null
   }
@@ -47,7 +47,7 @@ const Authors = ({ result, show }) => {
         </tbody>
       </table>
       <Mutation
-        mutation={EDIT_AUTHOR}
+        mutation={EDIT_AUTHOR} onError={handleError}
       >
         {(editAuthor) =>
           <AuthorForm editAuthor={editAuthor} authors={authors} />
