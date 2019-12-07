@@ -3,8 +3,7 @@ import Authors from './components/Authors'
 import Books from './components/Books'
 import NewBook from './components/NewBook'
 import LoginForm from './components/LoginForm'
-import { Query, Mutation } from 'react-apollo'
-import { useMutation, useApolloClient } from '@apollo/react-hooks'
+import { useQuery, useMutation, useApolloClient } from '@apollo/react-hooks'
 import { gql } from 'apollo-boost'
 
 const LOGIN = gql`
@@ -65,6 +64,19 @@ const App = () => {
     }, 10000)
   }
 
+  const authors = useQuery(ALL_AUTHORS)
+  const books = useQuery(ALL_BOOKS)
+  const [addBook] = useMutation(ADD_BOOK, {
+    onError: handleError,
+    update: (store, response) => {
+      const dataInStore = store.readQuery({ query: ALL_BOOKS })
+      dataInStore.allBooks.push(response.data.addBook)
+      store.writeQuery({
+        query: ALL_BOOKS,
+        data: dataInStore
+      })
+    }
+  })
   const [login] = useMutation(LOGIN, {
     onError: handleError
   })
@@ -89,14 +101,8 @@ const App = () => {
             {errorMessage}
           </div>
         }
-        <Query query={ALL_AUTHORS} pollInterval={2000}>
-          {(result) => <Authors show={page === 'authors'} result={result} handleError={handleError} token={token} />}
-        </Query>
-
-        <Query query={ALL_BOOKS} pollInterval={2000}>
-          {(result) => <Books show={page === 'books'} result={result} />}
-        </Query>
-
+        <Authors show={page === 'authors'} result={authors} handleError={handleError} token={token} />
+        <Books show={page === 'books'} result={books} />
         <LoginForm
           show={page === 'login'}
           login={login}
@@ -120,19 +126,10 @@ const App = () => {
           {errorMessage}
         </div>
       }
-      <Query query={ALL_AUTHORS} pollInterval={2000}>
-        {(result) => <Authors show={page === 'authors'} result={result} handleError={handleError} token={token} />}
-      </Query>
+      <Authors show={page === 'authors'} result={authors} handleError={handleError} token={token} ALL_AUTHORS={ALL_AUTHORS} />
+      <Books show={page === 'books'} result={books} />
+      <NewBook show={page === 'add'} addBook={addBook} />
 
-      <Query query={ALL_BOOKS} pollInterval={2000}>
-        {(result) => <Books show={page === 'books'} result={result} />}
-      </Query>
-
-      <Mutation mutation={ADD_BOOK} onError={handleError}>
-        {(addBook) =>
-          <NewBook show={page === 'add'} addBook={addBook} />
-        }
-      </Mutation>
     </div>
   )
 }

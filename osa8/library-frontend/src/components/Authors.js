@@ -1,6 +1,6 @@
 import React from 'react'
 import AuthorForm from './AuthorForm'
-import { Mutation } from 'react-apollo'
+import { useMutation } from '@apollo/react-hooks'
 import { gql } from 'apollo-boost'
 
 const EDIT_AUTHOR = gql`
@@ -11,8 +11,12 @@ mutation editAuthor($name: String!, $birthYearInt: Int!) {
   }
 }
 `
+const Authors = ({ result, show, handleError, token, ALL_AUTHORS }) => {
+  const [editAuthor] = useMutation(EDIT_AUTHOR, {
+    onError: handleError,
+    refetchQueries: [{ query: ALL_AUTHORS }]
+  })
 
-const Authors = ({ result, show, handleError, token }) => {
   if (!show) {
     return null
   }
@@ -46,13 +50,7 @@ const Authors = ({ result, show, handleError, token }) => {
           )}
         </tbody>
       </table>
-      <Mutation
-        mutation={EDIT_AUTHOR} onError={handleError}
-      >
-        {(editAuthor) =>
-          <AuthorForm editAuthor={editAuthor} authors={authors} token={token} />
-        }
-      </Mutation>
+      <AuthorForm editAuthor={editAuthor} authors={authors} token={token} />
     </div>
   )
 }

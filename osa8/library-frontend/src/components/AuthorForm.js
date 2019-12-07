@@ -27,7 +27,7 @@ const AuthorForm = (props) => {
           <label>
             name:
           <select value={name} onChange={({ target }) => setName(target.value)}>
-              <option value="" selected disabled hidden>choose author</option>
+              <option value="" defaultValue disabled hidden>choose author</option>
               {props.authors.map(a =>
                 <option key={a.name} value={a.name}>{a.name}</option>
               )}
