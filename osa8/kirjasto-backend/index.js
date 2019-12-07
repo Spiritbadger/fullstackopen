@@ -22,7 +22,14 @@ mongoose.connect(MONGODB_URI, { useNewUrlParser: true })
     console.log('error connection to MongoDB:', error.message)
   })
 
+const { PubSub } = require('apollo-server')
+const pubsub = new PubSub()
+
 const typeDefs = gql`
+
+type Subscription {
+  bookAdded: Book!
+}
 
 type Author {
   name: String!
@@ -150,8 +157,11 @@ const resolvers = {
           invalidArgs: args,
         })
       }
+      pubsub.publish('BOOK_ADDED', { bookAdded: book })
+
       return book
     },
+
     editAuthor: async (root, args, context) => {
       const currentUser = context.currentUser
 
@@ -194,7 +204,12 @@ const resolvers = {
 
       return { value: jwt.sign(userForToken, JWT_SECRET) }
     },
-  }
+  },
+  Subscription: {
+    bookAdded: {
+      subscribe: () => pubsub.asyncIterator(['BOOK_ADDED'])
+    },
+  },
 }
 
 const server = new ApolloServer({
@@ -212,6 +227,7 @@ const server = new ApolloServer({
   }
 })
 
-server.listen().then(({ url }) => {
+server.listen().then(({ url, subscriptionsUrl }) => {
   console.log(`Server ready at ${url}`)
+  console.log(`Subscriptions ready at ${subscriptionsUrl}`)
 })
