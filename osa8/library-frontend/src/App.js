@@ -4,7 +4,7 @@ import Books from './components/Books'
 import NewBook from './components/NewBook'
 import LoginForm from './components/LoginForm'
 import Recommendations from './components/Recommendations'
-import { useQuery, useMutation, useApolloClient } from '@apollo/react-hooks'
+import { useQuery, useMutation, useApolloClient, useSubscription } from '@apollo/react-hooks'
 import { gql } from 'apollo-boost'
 
 const LOGIN = gql`
@@ -71,6 +71,18 @@ mutation addBook($title: String!, $author: String!, $publishedInt: Int!, $genres
   }
 }
 `
+const BOOK_ADDED = gql`
+  subscription {
+    bookAdded {
+      title
+      author {
+        name
+      }
+      published
+      genres
+    }
+  }
+`
 
 const App = () => {
   const client = useApolloClient()
@@ -92,6 +104,7 @@ const App = () => {
     onError: handleError,
     refetchQueries: [{ query: ALL_AUTHORS }],
     update: (store, response) => {
+      updateCacheWith(response.data.addBook)
       const dataInStore = store.readQuery({ query: ALL_BOOKS })
       dataInStore.allBooks.push(response.data.addBook)
       store.writeQuery({
@@ -111,6 +124,27 @@ const App = () => {
     client.resetStore()
     setPage('authors')
   }
+
+  const updateCacheWith = (addedBook) => {
+    const includedIn = (set, object) =>
+      set.map(p => p.id).includes(object.id)
+
+    const dataInStore = client.readQuery({ query: ALL_BOOKS })
+    if (!includedIn(dataInStore.allBooks, addedBook)) {
+      client.writeQuery({
+        query: ALL_BOOKS,
+        data: { allBooks: dataInStore.allBooks.concat(addedBook) }
+      })
+    }
+  }
+
+  useSubscription(BOOK_ADDED, {
+    onSubscriptionData: ({ subscriptionData }) => {
+      const addedBook = subscriptionData.data.bookAdded
+      window.alert(`${addedBook.title} added`)
+      updateCacheWith(addedBook)
+    }
+  })
 
   if (!token) {
     return (
