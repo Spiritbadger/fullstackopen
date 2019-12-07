@@ -7,6 +7,17 @@ import Recommendations from './components/Recommendations'
 import { useQuery, useMutation, useApolloClient, useSubscription } from '@apollo/react-hooks'
 import { gql } from 'apollo-boost'
 
+const BOOK_DETAILS = gql`
+  fragment BookDetails on Book {
+    title
+    author {
+      name
+    }
+    published
+    genres
+  }
+`
+
 const LOGIN = gql`
   mutation login($username: String!, $password: String!) {
     login(username: $username, password: $password)  {
@@ -36,23 +47,20 @@ const ALL_AUTHORS = gql`
 const ALL_BOOKS = gql`
 {
   allBooks  {
-    title
-    author {name}
-    published
-    genres
+    ...BookDetails
   }
 }
+${BOOK_DETAILS}
 `
 
 const BOOKS_OF_GENRE = gql`
   query findBooksByGenre($genreToSearch: String!) {
     allBooks(genre: $genreToSearch) {
-      title
-      author {name}
-      published
+      ...BookDetails
     }
   }
-`
+  ${BOOK_DETAILS}
+  `
 
 const ADD_BOOK = gql`
 mutation addBook($title: String!, $author: String!, $publishedInt: Int!, $genres: [String!]) {
@@ -62,27 +70,20 @@ mutation addBook($title: String!, $author: String!, $publishedInt: Int!, $genres
     published: $publishedInt,
     genres: $genres
   ) {
-    title
-    author {
-      name
-    }
-    published
-    genres
+    ...BookDetails
   }
 }
+${BOOK_DETAILS}
 `
+
 const BOOK_ADDED = gql`
   subscription {
     bookAdded {
-      title
-      author {
-        name
-      }
-      published
-      genres
+      ...BookDetails
     }
   }
-`
+  ${BOOK_DETAILS}
+  `
 
 const App = () => {
   const client = useApolloClient()
