@@ -15,6 +15,10 @@ const AuthorForm = (props) => {
     setBirthYear('')
   }
 
+  if (!props.token) {
+    return null
+  }
+
   return (
     <div>
       <h2>set birthyear</h2>
@@ -23,6 +27,7 @@ const AuthorForm = (props) => {
           <label>
             name:
           <select value={name} onChange={({ target }) => setName(target.value)}>
+              <option value="" selected disabled hidden>choose author</option>
               {props.authors.map(a =>
                 <option key={a.name} value={a.name}>{a.name}</option>
               )}

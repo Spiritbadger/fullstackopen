@@ -73,21 +73,35 @@ const App = () => {
     setToken(null)
     localStorage.clear()
     client.resetStore()
+    setPage('authors')
   }
-
-  const errorNotification = () => errorMessage &&
-    <div style={{ color: 'red' }}>
-      {errorMessage}
-    </div>
 
   if (!token) {
     return (
       <div>
-        {errorNotification()}
-        <h2>Login</h2>
+        <div>
+          <button onClick={() => setPage('authors')}>authors</button>
+          <button onClick={() => setPage('books')}>books</button>
+          <button onClick={() => setPage('login')}>login</button>
+        </div>
+        {errorMessage &&
+          <div style={{ color: 'red' }}>
+            {errorMessage}
+          </div>
+        }
+        <Query query={ALL_AUTHORS} pollInterval={2000}>
+          {(result) => <Authors show={page === 'authors'} result={result} handleError={handleError} token={token} />}
+        </Query>
+
+        <Query query={ALL_BOOKS} pollInterval={2000}>
+          {(result) => <Books show={page === 'books'} result={result} />}
+        </Query>
+
         <LoginForm
+          show={page === 'login'}
           login={login}
           setToken={(token) => setToken(token)}
+          setPage={setPage}
         />
       </div>
     )
@@ -107,7 +121,7 @@ const App = () => {
         </div>
       }
       <Query query={ALL_AUTHORS} pollInterval={2000}>
-        {(result) => <Authors show={page === 'authors'} result={result} handleError={handleError} />}
+        {(result) => <Authors show={page === 'authors'} result={result} handleError={handleError} token={token} />}
       </Query>
 
       <Query query={ALL_BOOKS} pollInterval={2000}>

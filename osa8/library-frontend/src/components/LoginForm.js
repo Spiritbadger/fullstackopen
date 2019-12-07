@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 
 const LoginForm = (props) => {
+
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
 
@@ -15,7 +16,12 @@ const LoginForm = (props) => {
       const token = result.data.login.value
       props.setToken(token)
       localStorage.setItem('library-user-token', token)
+      props.setPage('authors')
     }
+  }
+
+  if (!props.show) {
+    return null
   }
 
   return (
