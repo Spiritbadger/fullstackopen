@@ -1,23 +1,38 @@
 import React, { useState, useEffect } from 'react'
 import { useApolloClient } from '@apollo/react-hooks'
+import { gql } from 'apollo-boost'
 
-const Recommendations = ({ show, BOOKS_OF_GENRE, user }) => {
+const query = gql`
+{
+  me {
+    username
+    favoriteGenre
+  }
+}
+`
+
+const Recommendations = ({ show, BOOKS_OF_GENRE }) => {
   const [books, setBooks] = useState([])
-  const client = useApolloClient(BOOKS_OF_GENRE)
+  const [usersGenre, setUsersGenre] = useState('')
+  const client = useApolloClient()
 
   useEffect(() => {
-    const findBooks = async () => {
+    const findUserGenre = async () => {
+      const result = await client.query({
+        query: query,
+        fetchPolicy: 'no-cache'
+      })
+      setUsersGenre(result.data.me.favoriteGenre)
+
       const { data } = await client.query({
         query: BOOKS_OF_GENRE,
-        variables: { genreToSearch: user.data.me.favoriteGenre },
+        variables: { genreToSearch: result.data.me.favoriteGenre },
         fetchPolicy: 'no-cache'
       })
       setBooks(data.allBooks)
     }
-
-    findBooks()
-  }, [user])
-
+    findUserGenre()
+  }, [books])
 
   if (!show) {
     return null
@@ -26,7 +41,7 @@ const Recommendations = ({ show, BOOKS_OF_GENRE, user }) => {
   return (
     <div>
       <h2>recommendations</h2>
-      <p>books in your favorite genre <b>{user.data.me.favoriteGenre}</b></p>
+      <p>books in your favorite genre <b>{usersGenre}</b></p>
       <table>
         <tbody>
           <tr>

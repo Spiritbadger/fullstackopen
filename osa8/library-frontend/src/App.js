@@ -25,14 +25,6 @@ const LOGIN = gql`
     }
   }
 `
-const ME = gql`
-{
-  me {
-    username
-    favoriteGenre
-  }
-}
-`
 
 const ALL_AUTHORS = gql`
 {
@@ -100,7 +92,6 @@ const App = () => {
 
   const authors = useQuery(ALL_AUTHORS)
   const books = useQuery(ALL_BOOKS)
-  const user = useQuery(ME)
   const [addBook] = useMutation(ADD_BOOK, {
     onError: handleError,
     refetchQueries: [{ query: ALL_AUTHORS }],
@@ -116,7 +107,6 @@ const App = () => {
   })
   const [login] = useMutation(LOGIN, {
     onError: handleError,
-    refetchQueries: [{ query: ME }],
   })
 
   const logout = () => {
@@ -190,7 +180,7 @@ const App = () => {
       <Authors show={page === 'authors'} result={authors} handleError={handleError} token={token} ALL_AUTHORS={ALL_AUTHORS} />
       <Books show={page === 'books'} result={books} genre={genre} setGenre={setGenre} BOOKS_OF_GENRE={BOOKS_OF_GENRE} />
       <NewBook show={page === 'add'} addBook={addBook} />
-      <Recommendations show={page === 'recommend'} BOOKS_OF_GENRE={BOOKS_OF_GENRE} user={user} />
+      <Recommendations show={page === 'recommend'} BOOKS_OF_GENRE={BOOKS_OF_GENRE} books={books} />
 
     </div>
   )
